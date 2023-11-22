@@ -18,7 +18,9 @@ const slice = createSlice({
   reducers: {
     removeTask: (state, action: PayloadAction<{ taskId: string; todolistId: string }>) => {
       const index = state[action.payload.todolistId].findIndex((task) => task.id === action.payload.taskId);
-      state[action.payload.todolistId].splice(index, 1);
+      if (index !== -1) {
+        state[action.payload.todolistId].splice(index, 1);
+      }
     },
     addTask: (state, action: PayloadAction<{ task: TaskType }>) => {
       state[action.payload.task.todoListId].unshift(action.payload.task);
