@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { authActions } from "features/Login/auth-reducer";
+import { setIsLoggedInAC } from "features/Login/auth-reducer";
 import { authApi } from "api/auth-api";
 
 const initialState: InitialStateType = {
@@ -38,7 +38,7 @@ export const setAppInitializedAC = (value: boolean) => ({ type: "APP/SET-IS-INIT
 export const initializeAppTC = () => (dispatch: Dispatch) => {
   authApi.me().then((res) => {
     if (res.data.resultCode === 0) {
-      dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
+      dispatch(setIsLoggedInAC(true));
     } else {
     }
 
