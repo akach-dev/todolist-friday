@@ -35,15 +35,16 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(todolistsActions.addTodolist, (state, action) => {
-      state[action.payload.todolist.id] = [];
-    });
-    builder.addCase(todolistsActions.removeTodolist, (state, action) => {
-      delete state[action.payload.id];
-    });
-    builder.addCase(todolistsActions.setTodolists, (state, action) => {
-      return Object.fromEntries(action.payload.todolists.map((todoList: TodolistType) => [todoList.id, []]));
-    });
+    builder
+      .addCase(todolistsActions.addTodolist, (state, action) => {
+        state[action.payload.todolist.id] = [];
+      })
+      .addCase(todolistsActions.removeTodolist, (state, action) => {
+        delete state[action.payload.id];
+      })
+      .addCase(todolistsActions.setTodolists, (state, action) => {
+        return Object.fromEntries(action.payload.todolists.map((todoList: TodolistType) => [todoList.id, []]));
+      });
   },
 });
 export const tasksReducer = slice.reducer;
