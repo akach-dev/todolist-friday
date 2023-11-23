@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
-import { setIsLoggedInAC } from "features/Login/auth-reducer";
 import { authApi } from "api/auth-api";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { authActions } from "features/Login/auth-reducer";
 
 const slice = createSlice({
   name: "app",
@@ -29,7 +29,7 @@ export const appActions = slice.actions;
 export const initializeAppTC = () => (dispatch: Dispatch) => {
   authApi.me().then((res) => {
     if (res.data.resultCode === 0) {
-      dispatch(setIsLoggedInAC(true));
+      dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
     } else {
     }
     dispatch(appActions.setAppInitialized({ isInitialized: true }));

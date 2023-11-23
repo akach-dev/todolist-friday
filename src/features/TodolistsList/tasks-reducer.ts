@@ -30,7 +30,12 @@ const slice = createSlice({
       action: PayloadAction<{ taskId: string; model: UpdateDomainTaskModelType; todolistId: string }>,
     ) => {
       const index = state[action.payload.todolistId].findIndex((task) => task.id === action.payload.taskId);
-      state[action.payload.todolistId][index] = { ...state[action.payload.todolistId][index], ...action.payload.model };
+      if (index) {
+        state[action.payload.todolistId][index] = {
+          ...state[action.payload.todolistId][index],
+          ...action.payload.model,
+        };
+      }
     },
     setTasks: (state, action: PayloadAction<{ tasks: Array<TaskType>; todolistId: string }>) => {
       state[action.payload.todolistId] = action.payload.tasks;
