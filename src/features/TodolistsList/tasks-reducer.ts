@@ -11,6 +11,7 @@ import { appActions } from "app/app-reducer";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { todolistsActions } from "features/TodolistsList/todolists-reducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { clearTasksAndTodoLists } from "common/actions/common-actions";
 
 const slice = createSlice({
   name: "tasks",
@@ -51,6 +52,9 @@ const slice = createSlice({
       })
       .addCase(todolistsActions.setTodolists, (state, action) => {
         return Object.fromEntries(action.payload.todolists.map((todoList: TodolistType) => [todoList.id, []]));
+      })
+      .addCase(clearTasksAndTodoLists.type, (state, action) => {
+        return {};
       });
   },
 });
