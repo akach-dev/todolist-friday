@@ -17,6 +17,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Menu } from "@mui/icons-material";
+import { selectIsLoggedIn } from "features/Login/auth-selectors";
 
 type PropsType = {
   demo?: boolean;
@@ -25,7 +26,7 @@ type PropsType = {
 function App({ demo = false }: PropsType) {
   const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status);
   const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized);
-  const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch<any>();
 
   useEffect(() => {

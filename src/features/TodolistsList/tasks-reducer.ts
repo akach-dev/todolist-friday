@@ -53,7 +53,7 @@ const slice = createSlice({
       .addCase(todolistsActions.setTodolists, (state, action) => {
         return Object.fromEntries(action.payload.todolists.map((todoList: TodolistType) => [todoList.id, []]));
       })
-      .addCase(clearTasksAndTodoLists.type, (state, action) => {
+      .addCase(clearTasksAndTodoLists.type, () => {
         return {};
       });
   },

@@ -45,7 +45,7 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(clearTasksAndTodoLists.type, (state, action) => {
+    builder.addCase(clearTasksAndTodoLists.type, () => {
       return [];
     });
   },
@@ -99,7 +99,6 @@ export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
 };
 
 // types
-
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType;
