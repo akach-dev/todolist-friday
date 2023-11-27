@@ -61,7 +61,7 @@ function App({ demo = false }: PropsType) {
             <Typography variant="h6">News</Typography>
             {isLoggedIn && (
               <Button color="inherit" onClick={logoutHandler}>
-                Log out
+                Log out ❌
               </Button>
             )}
           </Toolbar>
