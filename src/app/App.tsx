@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 import { Menu } from "@mui/icons-material";
 import { selectIsLoggedIn } from "features/Login/auth-selectors";
 import { selectIsInitialized } from "app/app-selectors";
+import { Dispatch } from "redux";
 
 type PropsType = {
   demo?: boolean;
@@ -40,9 +41,11 @@ function App({ demo = false }: PropsType) {
 
   if (!isInitialized) {
     return (
-      <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
-        <CircularProgress />
-      </div>
+      <>
+        <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
+          <CircularProgress />
+        </div>
+      </>
     );
   }
 
