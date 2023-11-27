@@ -2,34 +2,36 @@ import React, { useCallback, useEffect } from "react";
 import "./App.css";
 import { TodolistsList } from "features/TodolistsList/TodolistsList";
 import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar";
-import { useDispatch, useSelector } from "react-redux";
-import { AppRootStateType } from "./store";
-import { initializeAppTC, RequestStatusType } from "./app-reducer";
+import { useSelector } from "react-redux";
+import { initializeAppTC } from "app/app.reducer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login } from "features/Login/Login";
-import { logoutTC } from "features/Login/auth-reducer";
-import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import LinearProgress from "@mui/material/LinearProgress";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import { Login } from "features/auth/Login";
+import { logoutTC } from "features/auth/auth.reducer";
+import {
+  AppBar,
+  Button,
+  CircularProgress,
+  Container,
+  IconButton,
+  LinearProgress,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import { selectIsLoggedIn } from "features/Login/auth-selectors";
-import { selectIsInitialized } from "app/app-selectors";
-import { Dispatch } from "redux";
+import { useAppDispatch } from "hooks/useAppDispatch";
+import { selectIsLoggedIn } from "features/auth/auth.selectors";
+import { selectAppStatus, selectIsInitialized } from "app/app.selectors";
 
 type PropsType = {
   demo?: boolean;
 };
 
 function App({ demo = false }: PropsType) {
-  const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status);
+  const status = useSelector(selectAppStatus);
   const isInitialized = useSelector(selectIsInitialized);
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const dispatch = useDispatch<any>();
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(initializeAppTC());
@@ -41,11 +43,9 @@ function App({ demo = false }: PropsType) {
 
   if (!isInitialized) {
     return (
-      <>
-        <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
-          <CircularProgress />
-        </div>
-      </>
+      <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
+        <CircularProgress />
+      </div>
     );
   }
 
