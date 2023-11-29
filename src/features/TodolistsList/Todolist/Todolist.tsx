@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 import { AddItemForm } from "components/AddItemForm/AddItemForm";
 import { EditableSpan } from "components/EditableSpan/EditableSpan";
 import { Task } from "./Task/Task";
@@ -22,7 +22,7 @@ type PropsType = {
   demo?: boolean;
 };
 
-export const Todolist = React.memo(function ({ demo = false, ...props }: PropsType) {
+export const Todolist: FC<PropsType> = React.memo(function ({ demo = false, ...props }) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
