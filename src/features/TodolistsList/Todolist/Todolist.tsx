@@ -1,13 +1,13 @@
-import React, { FC, useCallback, useEffect } from "react";
-import { AddItemForm } from "components/AddItemForm/AddItemForm";
-import { EditableSpan } from "components/EditableSpan/EditableSpan";
+import React, { useCallback, useEffect } from "react";
 import { Task } from "./Task/Task";
-import { TaskStatuses, TaskType } from "api/todolists-api";
-import { FilterValuesType, TodolistDomainType } from "features/TodolistsList/todolists.reducer";
-import { useAppDispatch } from "hooks/useAppDispatch";
+import { FilterValuesType, TodolistDomainType } from "../todolists-reducer";
+import { fetchTasksTC } from "../tasks-reducer";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { tasksThunks } from "features/TodolistsList/tasks.reducer";
+import { useAppDispatch } from "hooks/useAppDispatch";
+import { TaskStatuses, TaskType } from "api/todolists-api";
+import { EditableSpan } from "components/EditableSpan/EditableSpan";
+import { AddItemForm } from "components/AddItemForm/AddItemForm";
 
 type PropsType = {
   todolist: TodolistDomainType;
@@ -22,45 +22,45 @@ type PropsType = {
   demo?: boolean;
 };
 
-export const Todolist: FC<PropsType> = React.memo(function ({ demo = false, ...props }) {
+export const Todolist = React.memo(function ({ demo = false, ...props }: PropsType) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (demo) {
       return;
     }
-    dispatch(tasksThunks.fetchTasks(props.todolist.id));
+    const thunk = fetchTasksTC(props.todolist.id);
+    dispatch(thunk);
   }, []);
 
   const addTask = useCallback(
     (title: string) => {
       props.addTask(title, props.todolist.id);
     },
-    [props.addTask, props.todolist.id]
+    [props.addTask, props.todolist.id],
   );
 
   const removeTodolist = () => {
     props.removeTodolist(props.todolist.id);
   };
-
   const changeTodolistTitle = useCallback(
     (title: string) => {
       props.changeTodolistTitle(props.todolist.id, title);
     },
-    [props.todolist.id, props.changeTodolistTitle]
+    [props.todolist.id, props.changeTodolistTitle],
   );
 
   const onAllClickHandler = useCallback(
     () => props.changeFilter("all", props.todolist.id),
-    [props.todolist.id, props.changeFilter]
+    [props.todolist.id, props.changeFilter],
   );
   const onActiveClickHandler = useCallback(
     () => props.changeFilter("active", props.todolist.id),
-    [props.todolist.id, props.changeFilter]
+    [props.todolist.id, props.changeFilter],
   );
   const onCompletedClickHandler = useCallback(
     () => props.changeFilter("completed", props.todolist.id),
-    [props.todolist.id, props.changeFilter]
+    [props.todolist.id, props.changeFilter],
   );
 
   let tasksForTodolist = props.tasks;
