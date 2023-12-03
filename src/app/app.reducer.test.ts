@@ -1,6 +1,6 @@
-import { appActions, AppInitialState, appReducer } from "app/app-reducer";
+import { appActions, AppInitialStateType, appReducer } from "app/app.reducer";
 
-let startState: AppInitialState;
+let startState: AppInitialStateType;
 
 beforeEach(() => {
   startState = {
