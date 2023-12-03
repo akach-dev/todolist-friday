@@ -12,24 +12,16 @@ const initialState: TasksStateType = {};
 const slice = createSlice({
   name: "tasks",
   initialState,
-  reducers: {
-    updateTask: (
-      state,
-      action: PayloadAction<{
-        taskId: string;
-        model: UpdateDomainTaskModelType;
-        todolistId: string;
-      }>
-    ) => {
-      const tasks = state[action.payload.todolistId];
-      const index = tasks.findIndex((t) => t.id === action.payload.taskId);
-      if (index !== -1) {
-        tasks[index] = { ...tasks[index], ...action.payload.model };
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(tasksThunks.updateTask.fulfilled, (state, action) => {
+        const tasks = state[action.payload.todolistId];
+        let task = tasks.find((task) => task.id === action.payload.taskId);
+        if (task) {
+          task = { ...task, ...action.payload.model };
+        }
+      })
       .addCase(tasksThunks.removeTask.fulfilled, (state, action) => {
         const tasks = state[action.payload.todolistId];
         const index = tasks.findIndex((task) => task.id === action.payload.taskId);
@@ -167,41 +159,6 @@ const updateTask = createAppAsyncThunk<UpdateTaskArgType, UpdateTaskArgType>(
     }
   }
 );
-
-export const updateTaskTC =
-  (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string): AppThunk =>
-  (dispatch, getState) => {
-    const state = getState();
-    const task = state.tasks[todolistId].find((t) => t.id === taskId);
-    if (!task) {
-      //throw new Error("task not found in the state");
-      console.warn("task not found in the state");
-      return;
-    }
-
-    const apiModel: UpdateTaskModelType = {
-      deadline: task.deadline,
-      description: task.description,
-      priority: task.priority,
-      startDate: task.startDate,
-      title: task.title,
-      status: task.status,
-      ...domainModel,
-    };
-
-    todolistsAPI
-      .updateTask(todolistId, taskId, apiModel)
-      .then((res) => {
-        if (res.data.resultCode === 0) {
-          dispatch(tasksActions.updateTask({ taskId, model: domainModel, todolistId }));
-        } else {
-          handleServerAppError(res.data, dispatch);
-        }
-      })
-      .catch((error) => {
-        handleServerNetworkError(error, dispatch);
-      });
-  };
 
 export const tasksReducer = slice.reducer;
 export const tasksActions = slice.actions;
