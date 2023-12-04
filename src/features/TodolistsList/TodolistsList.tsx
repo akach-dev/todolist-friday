@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
-  addTodolistTC,
   changeTodolistTitleTC,
-  fetchTodolistsTC,
   FilterValuesType,
-  removeTodolistTC,
   todolistsActions,
+  todoListThunks,
 } from "features/TodolistsList/todolists.reducer";
 import { tasksThunks } from "features/TodolistsList/tasks.reducer";
 import { TaskStatuses } from "api/todolists-api";
@@ -34,8 +32,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     if (demo || !isLoggedIn) {
       return;
     }
-    const thunk = fetchTodolistsTC();
-    dispatch(thunk);
+    dispatch(todoListThunks.fetchTodolists());
   }, []);
 
   const removeTask = useCallback(function (taskId: string, todolistId: string) {
@@ -60,7 +57,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   }, []);
 
   const removeTodolist = useCallback(function (id: string) {
-    const thunk = removeTodolistTC(id);
+    const thunk = todoListThunks.removeTodolist(id);
     dispatch(thunk);
   }, []);
 
@@ -71,7 +68,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 
   const addTodolist = useCallback(
     (title: string) => {
-      const thunk = addTodolistTC(title);
+      const thunk = todoListThunks.addTodolist(title);
       dispatch(thunk);
     },
     [dispatch]

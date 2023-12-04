@@ -3,10 +3,12 @@ import {
   TodolistDomainType,
   todolistsActions,
   todolistsReducer,
+  todoListThunks,
 } from "features/TodolistsList/todolists.reducer";
 import { v1 } from "uuid";
 import { TodolistType } from "api/todolists-api";
 import { RequestStatusType } from "app/app.reducer";
+import { AddTodoListActionType, RemoveTodoListActionType } from "features/TodolistsList/tasks.reducer.test";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -22,7 +24,14 @@ beforeEach(() => {
 });
 
 test("correct todolist should be removed", () => {
-  const endState = todolistsReducer(startState, todolistsActions.removeTodolist({ id: todolistId1 }));
+  const action: RemoveTodoListActionType = {
+    type: todoListThunks.removeTodolist.typePrefix,
+    payload: {
+      id: todolistId1,
+    },
+  };
+
+  const endState = todolistsReducer(startState, action);
 
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);
@@ -35,8 +44,14 @@ test("correct todolist should be added", () => {
     addedDate: "",
     order: 0,
   };
+  const action: AddTodoListActionType = {
+    type: todoListThunks.addTodolist.typePrefix,
+    payload: {
+      todolist,
+    },
+  };
 
-  const endState = todolistsReducer(startState, todolistsActions.addTodolist({ todolist }));
+  const endState = todolistsReducer(startState, action);
 
   expect(endState.length).toBe(3);
   expect(endState[0].title).toBe(todolist.title);
@@ -65,7 +80,19 @@ test("correct filter of todolist should be changed", () => {
   expect(endState[1].filter).toBe(newFilter);
 });
 test("todolists should be added", () => {
-  const action = todolistsActions.setTodolists({ todolists: startState });
+  type FetchToddListsActionType = {
+    type: string;
+    payload: {
+      todolists: TodolistType[];
+    };
+  };
+
+  const action: FetchToddListsActionType = {
+    type: todoListThunks.fetchTodolists.typePrefix,
+    payload: {
+      todolists: startState,
+    },
+  };
 
   const endState = todolistsReducer([], action);
 

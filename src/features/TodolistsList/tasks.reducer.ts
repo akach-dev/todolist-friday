@@ -2,7 +2,7 @@ import { TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTy
 import { AppThunk } from "app/store";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { appActions } from "app/app.reducer";
-import { todolistsActions } from "features/TodolistsList/todolists.reducer";
+import { todolistsActions, todoListThunks } from "features/TodolistsList/todolists.reducer";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksAndTodolists } from "common/actions/common.actions";
 import { createAppAsyncThunk } from "common/thunk/createAppAsyncThunk";
@@ -27,20 +27,20 @@ const slice = createSlice({
         const index = tasks.findIndex((task) => task.id === action.payload.taskId);
         tasks.splice(index, 1);
       })
-      .addCase(addTask.fulfilled, (state, action) => {
+      .addCase(tasksThunks.addTask.fulfilled, (state, action) => {
         const tasks = state[action.payload.task.todoListId];
         tasks.unshift(action.payload.task);
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
+      .addCase(tasksThunks.fetchTasks.fulfilled, (state, action) => {
         state[action.payload.todolistId] = action.payload.tasks;
       })
-      .addCase(todolistsActions.addTodolist, (state, action) => {
+      .addCase(todoListThunks.addTodolist.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = [];
       })
-      .addCase(todolistsActions.removeTodolist, (state, action) => {
+      .addCase(todoListThunks.removeTodolist.fulfilled, (state, action) => {
         delete state[action.payload.id];
       })
-      .addCase(todolistsActions.setTodolists, (state, action) => {
+      .addCase(todoListThunks.fetchTodolists.fulfilled, (state, action) => {
         action.payload.todolists.forEach((tl) => {
           state[tl.id] = [];
         });
