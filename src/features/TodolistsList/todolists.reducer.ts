@@ -54,6 +54,14 @@ const slice = createSlice({
 
 // thunks
 
+export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
+  return (dispatch) => {
+    todolistsAPI.updateTodolist(id, title).then((res) => {
+      dispatch(todolistsActions.changeTodolistTitle({ id, title }));
+    });
+  };
+};
+
 const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>(
   `${slice.name}/addTodolist`,
   async (title, thunkAPI) => {
@@ -75,14 +83,6 @@ const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>(
     }
   }
 );
-
-export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
-  return (dispatch) => {
-    todolistsAPI.updateTodolist(id, title).then((res) => {
-      dispatch(todolistsActions.changeTodolistTitle({ id, title }));
-    });
-  };
-};
 
 const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }>(
   `${slice.name}/fetchTodolists`,
