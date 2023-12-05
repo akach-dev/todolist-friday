@@ -14,6 +14,14 @@ let todolistId1: string;
 let todolistId2: string;
 let startState: Array<TodolistDomainType> = [];
 
+export type UpdateTodoListActionType = {
+  type: string;
+  payload: {
+    id: string;
+    title: string;
+  };
+};
+
 beforeEach(() => {
   todolistId1 = v1();
   todolistId2 = v1();
@@ -61,7 +69,10 @@ test("correct todolist should be added", () => {
 test("correct todolist should change its name", () => {
   let newTodolistTitle = "New Todolist";
 
-  const action = todolistsActions.changeTodolistTitle({ id: todolistId2, title: newTodolistTitle });
+  const action: UpdateTodoListActionType = {
+    type: todoListThunks.changeTodolistTitle.typePrefix,
+    payload: { id: todolistId2, title: newTodolistTitle },
+  };
 
   const endState = todolistsReducer(startState, action);
 
