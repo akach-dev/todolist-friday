@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk } from "app/store";
-import { appActions } from "app/app.reducer";
+import { appActions, appThunks } from "app/app.reducer";
 import { authAPI, LoginParamsType } from "features/auth/auth.api";
 import { clearTasksAndTodolists } from "common/actions";
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
@@ -22,11 +21,12 @@ const slice = createSlice({
       })
       .addCase(authThunks.login.fulfilled, (state) => {
         state.isLoggedIn = true;
+      })
+      .addCase(appThunks.initializeApp.fulfilled, (state, action) => {
+        state.isLoggedIn = action.payload.isLoggedIn;
       });
   },
 });
-
-// thunks
 
 const login = createAppAsyncThunk<undefined, LoginParamsType>(`${slice.name}/login`, async (data, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
@@ -44,7 +44,7 @@ const login = createAppAsyncThunk<undefined, LoginParamsType>(`${slice.name}/log
     rejectWithValue(null);
   }
 });
-const logout = createAppAsyncThunk<undefined, undefined>(`${slice.name}/logout`, async (arg, thunkAPI) => {
+const logout = createAppAsyncThunk<undefined, undefined>(`${slice.name}/logout`, async (_, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
