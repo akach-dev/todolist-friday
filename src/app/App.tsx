@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
+import { appThunks } from "app/app.reducer";
 import { Login } from "features/auth/Login";
 import "./App.css";
 import { TodolistsList } from "features/TodolistsList/TodolistsList";
@@ -20,7 +21,6 @@ import { useAppDispatch } from "common/hooks";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectAppStatus, selectIsInitialized } from "app/app.selectors";
 import { authThunks } from "features/auth/auth.reducer";
-import { appThunks } from "app/app.reducer";
 
 function App() {
   const status = useSelector(selectAppStatus);

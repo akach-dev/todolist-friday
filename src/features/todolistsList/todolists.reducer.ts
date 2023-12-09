@@ -4,7 +4,6 @@ import { todolistsApi, TodolistType, UpdateTodolistTitleArgType } from "features
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
 import { ResultCode } from "common/enums";
 import { clearTasksAndTodolists } from "common/actions";
-import { thunkTryCatch } from "common/utils/thunk-try-catch";
 
 const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }, void>(
   "todo/fetchTodolists",
@@ -21,19 +20,25 @@ const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }, void>(
     }
   },
 );
+
 const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>(
   "todo/addTodolist",
   async (title, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    return thunkTryCatch(thunkAPI, async () => {
+    try {
+      dispatch(appActions.setAppStatus({ status: "loading" }));
       const res = await todolistsApi.createTodolist(title);
       if (res.data.resultCode === ResultCode.Success) {
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
         return { todolist: res.data.data.item };
       } else {
         handleServerAppError(res.data, dispatch);
         return rejectWithValue(null);
       }
-    });
+    } catch (e) {
+      handleServerNetworkError(e, dispatch);
+      return rejectWithValue(null);
+    }
   },
 );
 
