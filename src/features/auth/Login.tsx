@@ -3,9 +3,9 @@ import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
+import { authThunks } from "features/auth/auth.reducer";
 import { useAppDispatch } from "common/hooks";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
-import { authThunks } from "features/auth/auth.reducer";
 import { BaseResponseType } from "common/types/common.types";
 
 export const Login = () => {
@@ -15,16 +15,16 @@ export const Login = () => {
 
   const formik = useFormik({
     validate: (values) => {
-      if (!values.email) {
-        return {
-          email: "Email is required",
-        };
-      }
-      if (!values.password) {
-        return {
-          password: "Password is required",
-        };
-      }
+      // if (!values.email) {
+      //   return {
+      //     email: "Email is required",
+      //   };
+      // }
+      // if (!values.password) {
+      //   return {
+      //     password: "Password is required",
+      //   };
+      // }
     },
     initialValues: {
       email: "",
@@ -34,8 +34,8 @@ export const Login = () => {
     onSubmit: (values, formikHelpers) => {
       dispatch(authThunks.login(values))
         .unwrap()
-        .catch((error: BaseResponseType) => {
-          error.fieldsErrors.forEach((field) => {
+        .catch(({ fieldsErrors }: BaseResponseType) => {
+          fieldsErrors?.forEach((field) => {
             formikHelpers.setFieldError(field.field, field.error);
           });
         });

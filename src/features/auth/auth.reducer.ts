@@ -3,6 +3,7 @@ import { appActions } from "app/app.reducer";
 import { authAPI, LoginParamsType } from "features/auth/auth.api";
 import { clearTasksAndTodolists } from "common/actions";
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
+import { ResultCode } from "common/enums";
 
 const slice = createSlice({
   name: "auth",
@@ -21,15 +22,16 @@ const login = createAppAsyncThunk<undefined, LoginParamsType>(`${slice.name}/log
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
     const res = await authAPI.login(arg);
-    if (res.data.resultCode === 0) {
+    if (res.data.resultCode === ResultCode.Success) {
       dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
     } else {
-      handleServerAppError(res.data, dispatch);
-      return rejectWithValue(null);
+      const isShowAppError = !res.data.fieldsErrors.length;
+      handleServerAppError(res.data, dispatch, isShowAppError);
+      return rejectWithValue(res.data);
     }
-  } catch (error) {
-    handleServerNetworkError(error, dispatch);
+  } catch (e) {
+    handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   }
 });
@@ -39,7 +41,7 @@ const logout = createAppAsyncThunk<undefined, undefined>(`${slice.name}/logout`,
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
     const res = await authAPI.logout();
-    if (res.data.resultCode === 0) {
+    if (res.data.resultCode === ResultCode.Success) {
       dispatch(authActions.setIsLoggedIn({ isLoggedIn: false }));
       dispatch(clearTasksAndTodolists());
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
@@ -47,8 +49,8 @@ const logout = createAppAsyncThunk<undefined, undefined>(`${slice.name}/logout`,
       handleServerAppError(res.data, dispatch);
       return rejectWithValue(null);
     }
-  } catch (error) {
-    handleServerNetworkError(error, dispatch);
+  } catch (e) {
+    handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   }
 });
