@@ -1,5 +1,5 @@
 import { useActions } from "common/hooks";
-import { authThunks } from "features/auth/model/auth.slice";
+import { authThunks } from "features/auth/model/authSlice";
 import { FormikHelpers, useFormik } from "formik";
 import { LoginParamsType } from "features/auth/api/auth.api";
 import { BaseResponseType } from "common/types";

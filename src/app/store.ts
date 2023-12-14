@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { tasksSlice } from "features/todolists-List/model/tasks/tasksSlice";
 import { todolistsSlice } from "features/todolists-List/model/todoLists/todolistsSlice";
 import { appSlice } from "app/appSlice";
-import { authSlice } from "features/auth/model/auth.slice";
+import { authSlice } from "features/auth/model/authSlice";
+import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
 
 export type AppRootStateType = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
 
 // @ts-ignore
 window.store = store;

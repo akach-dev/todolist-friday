@@ -6,17 +6,15 @@ import { TaskStatuses } from "common/enums";
 import { TaskType } from "features/todolists-List/api/tasks/tasksApi.types";
 import { useActions } from "common/hooks";
 import { tasksThunks } from "features/todolists-List/model/tasks/tasksSlice";
-import s from ".//Task.module.css";
+import s from "features/todolists-List/ui/Todolist/Tasks/Task/Task.module.css";
 
 type Props = {
   task: TaskType;
   todolistId: string;
-  changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void;
-  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void;
 };
 
-export const Task = React.memo(({ task, changeTaskTitle, changeTaskStatus, todolistId }: Props) => {
-  const { removeTask } = useActions(tasksThunks);
+export const Task = React.memo(({ task, todolistId }: Props) => {
+  const { removeTask, updateTask } = useActions(tasksThunks);
 
   const removeTaskHandler = useCallback(
     () => removeTask({ taskId: task.id, todolistId: todolistId }),
@@ -25,15 +23,19 @@ export const Task = React.memo(({ task, changeTaskTitle, changeTaskStatus, todol
 
   const changeTaskHandler = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      let newIsDoneValue = e.currentTarget.checked;
-      changeTaskStatus(task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, todolistId);
+      const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
+      updateTask({
+        taskId: task.id,
+        todolistId,
+        domainModel: { status },
+      });
     },
     [task.id, todolistId],
   );
 
   const changeTaskTitleHandler = useCallback(
     (newValue: string) => {
-      changeTaskTitle(task.id, newValue, todolistId);
+      updateTask({ taskId: task.id, todolistId, domainModel: { title: newValue } });
     },
     [task.id, todolistId],
   );
