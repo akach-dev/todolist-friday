@@ -18,7 +18,7 @@ export const Todolist = React.memo(function ({ todolist }: Props) {
 
   useEffect(() => {
     fetchTasks(id);
-  }, []);
+  }, [fetchTasks, id]);
 
   const addTaskHandler = useCallback(
     (title: string) => {
@@ -29,12 +29,9 @@ export const Todolist = React.memo(function ({ todolist }: Props) {
 
   return (
     <>
-      <AddItemForm addItem={addTaskHandler} disabled={todolist.entityStatus === "loading"} />
-
       <TodolistTitle todolist={todolist} />
-
+      <AddItemForm addItem={addTaskHandler} disabled={todolist.entityStatus === "loading"} />
       <Tasks todolist={todolist} />
-
       <div style={{ paddingTop: "10px" }}>
         <FilterTasksButtons todolist={todolist} />
       </div>

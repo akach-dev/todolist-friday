@@ -20,11 +20,14 @@ export const TodolistsList = () => {
       return;
     }
     fetchTodolists();
-  }, []);
+  }, [fetchTodolists, isLoggedIn]);
 
-  const addTodolist = useCallback((title: string) => {
-    return addTodolistThunk(title).unwrap();
-  }, []);
+  const addTodolist = useCallback(
+    (title: string) => {
+      return addTodolistThunk(title).unwrap();
+    },
+    [addTodolistThunk],
+  );
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;

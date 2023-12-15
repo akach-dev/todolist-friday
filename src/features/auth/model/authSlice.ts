@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { AnyAction, createSlice } from "@reduxjs/toolkit";
 import { appActions } from "app/appSlice";
 import { authAPI, LoginParamsType } from "features/auth/api/auth.api";
 import { clearTasksAndTodolists } from "common/actions";
@@ -66,7 +66,21 @@ const slice = createSlice({
       })
       .addCase(initializeApp.fulfilled, (state, action) => {
         state.isLoggedIn = action.payload.isLoggedIn;
-      });
+      })
+      .addMatcher(
+        (action: AnyAction) => {
+          if (
+            action.type === "auth/login/fulfilled" ||
+            action.type === "auth/logout/fulfilled" ||
+            action.type === "app/initializeApp/fulfilled"
+          )
+            return true;
+          return false;
+        },
+        (state, action) => {
+          state.isLoggedIn = action.payload.isLoggedIn;
+        },
+      );
   },
 });
 

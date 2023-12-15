@@ -1,4 +1,4 @@
-import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   status: "idle" as RequestStatusType,
@@ -16,39 +16,27 @@ const slice = createSlice({
     setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
       state.error = action.payload.error;
     },
-    setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
-      state.status = action.payload.status;
-    },
     setAppInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
       state.isInitialized = action.payload.isInitialized;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        (action: AnyAction) => {
-          return action.type.endsWith("/pending");
-        },
-        (state) => {
-          state.status = "loading";
-        },
-      )
-      .addMatcher(
-        (action: AnyAction) => {
-          return action.type.endsWith("/fulfilled");
-        },
-        (state) => {
-          state.status = "succeeded";
-        },
-      )
-      .addMatcher(
-        (action: AnyAction) => {
-          return action.type.endsWith("/rejected");
-        },
-        (state) => {
-          state.status = "failed";
-        },
-      );
+      .addMatcher(isPending, (state) => {
+        state.status = "loading";
+      })
+      .addMatcher(isFulfilled, (state) => {
+        state.status = "succeeded";
+      })
+      .addMatcher(isRejected, (state, action: AnyAction) => {
+        state.status = "failed";
+        if (action.payload) {
+          if (action.type === "todo/addTodolist/rejected") return;
+          state.error = action.payload.messages[0];
+        } else {
+          state.error = action.error.message ? action.error.message : "Some error occurred";
+        }
+      });
   },
 });
 
