@@ -105,9 +105,9 @@ const slice = createSlice({
       })
       .addCase(updateTask.fulfilled, (state, action) => {
         const tasks = state[action.payload.todolistId];
-        const index = tasks.findIndex((t) => t.id === action.payload.taskId);
-        if (index !== -1) {
-          tasks[index] = { ...tasks[index], ...action.payload.domainModel };
+        const task = tasks.find((t) => t.id === action.payload.taskId);
+        if (task) {
+          Object.assign(task, action.payload.domainModel);
         }
       })
       .addCase(removeTask.fulfilled, (state, action) => {
