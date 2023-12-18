@@ -1,10 +1,9 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
-import { BaseResponseType } from "common/types";
 
 type AddItemFormPropsType = {
-  addItem: (title: string) => Promise<any>;
+  addItem: (title: string) => void;
   disabled?: boolean;
 };
 
@@ -14,15 +13,8 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: A
 
   const addItemHandler = () => {
     if (title.trim() !== "") {
-      addItem(title)
-        .then(() => {
-          setTitle("");
-        })
-        .catch((error: BaseResponseType) => {
-          if (error?.resultCode) {
-            setError(error.messages[0]);
-          }
-        });
+      addItem(title);
+      setTitle("");
     } else {
       setError("Title is required");
     }
@@ -52,9 +44,6 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: A
         onKeyPress={onKeyPressHandler}
         label="Title"
         helperText={error}
-        style={{
-          maxWidth: "194px",
-        }}
       />
       <IconButton color="primary" onClick={addItemHandler} disabled={disabled}>
         <AddBox />
