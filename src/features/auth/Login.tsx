@@ -14,18 +14,18 @@ export const Login = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const formik = useFormik({
-    // validate: (values) => {
-    //   if (!values.email) {
-    //     return {
-    //       email: "Email is required",
-    //     };
-    //   }
-    //   if (!values.password) {
-    //     return {
-    //       password: "Password is required",
-    //     };
-    //   }
-    // },
+    validate: (values) => {
+      if (!values.email) {
+        return {
+          email: "Email is required",
+        };
+      }
+      if (!values.password) {
+        return {
+          password: "Password is required",
+        };
+      }
+    },
     initialValues: {
       email: "",
       password: "",
