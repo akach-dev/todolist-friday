@@ -144,6 +144,4 @@ export type UpdateDomainTaskModelType = {
   deadline?: string;
 };
 
-export type TasksStateType = {
-  [key: string]: Array<TaskType>;
-};
+export type TasksStateType = Record<string, TaskType[]>;

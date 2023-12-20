@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState = {
   status: "idle" as RequestStatusType,
   error: null as string | null,
+  isInitialized: false,
 };
 
 export type AppInitialStateType = typeof initialState;
@@ -17,6 +18,9 @@ const slice = createSlice({
     },
     setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
       state.status = action.payload.status;
+    },
+    setAppInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
+      state.isInitialized = action.payload.isInitialized;
     },
   },
 });

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
@@ -12,29 +12,27 @@ import {
   Typography,
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import { Login } from "features/auth/Login";
+import { Login } from "features/auth/ui/login/Login";
 import "./App.css";
-import { TodolistsList } from "features/todolistsList/TodolistsList";
+import { TodolistsList } from "features/TodolistsList/TodolistsList";
 import { ErrorSnackbar } from "common/components";
-import { selectIsInitialized, selectIsLoggedIn } from "features/auth/auth.selectors";
-import { selectAppStatus } from "app/app.selectors";
-import { authAThunks } from "features/auth/auth.reducer";
 import { useActions } from "common/hooks";
+import { selectIsLoggedIn } from "features/auth/model/auth.selectors";
+import { selectAppStatus, selectIsInitialized } from "app/app.selectors";
+import { authThunks } from "features/auth/model/auth.slice";
 
 function App() {
   const status = useSelector(selectAppStatus);
   const isInitialized = useSelector(selectIsInitialized);
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  const { initializeApp, logout } = useActions(authAThunks);
+  const { initializeApp, logout } = useActions(authThunks);
 
   useEffect(() => {
     initializeApp();
   }, []);
 
-  const logoutHandler = useCallback(() => {
-    logout();
-  }, []);
+  const logoutHandler = () => logout();
 
   if (!isInitialized) {
     return (
