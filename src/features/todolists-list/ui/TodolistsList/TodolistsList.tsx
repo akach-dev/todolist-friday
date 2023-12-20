@@ -8,12 +8,10 @@ import { Todolist } from "features/todolists-list/ui/TodoList/Todolist";
 import { Navigate } from "react-router-dom";
 import { useActions } from "common/hooks";
 import { selectIsLoggedIn } from "features/auth/model/auth.selectors";
-import { selectTasks } from "features/todolists-list/model/tasks/tasksSelectors";
 import { selectTodolists } from "features/todolists-list/model";
 
 export const TodolistsList = () => {
   const todolists = useSelector(selectTodolists);
-  const tasks = useSelector(selectTasks);
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const {
@@ -60,12 +58,10 @@ export const TodolistsList = () => {
       </Grid>
       <Grid container spacing={3}>
         {todolists.map((tl) => {
-          let allTodolistTasks = tasks[tl.id];
-
           return (
             <Grid item key={tl.id}>
               <Paper style={{ padding: "10px" }}>
-                <Todolist todolist={tl} tasks={allTodolistTasks} />
+                <Todolist todolist={tl} />
               </Paper>
             </Grid>
           );
