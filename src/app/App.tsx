@@ -14,11 +14,11 @@ import {
 import { Menu } from "@mui/icons-material";
 import { Login } from "features/auth/ui/login/Login";
 import "./App.css";
-import { TodolistsList } from "features/TodolistsList/TodolistsList";
+import { TodolistsList } from "features/todolists-list/ui/TodolistsList/TodolistsList";
 import { ErrorSnackbar } from "common/components";
 import { useActions } from "common/hooks";
 import { selectIsLoggedIn } from "features/auth/model/auth.selectors";
-import { selectAppStatus, selectIsInitialized } from "app/app.selectors";
+import { selectAppStatus, selectIsInitialized } from "app/appSelectors";
 import { authThunks } from "features/auth/model/auth.slice";
 
 function App() {
