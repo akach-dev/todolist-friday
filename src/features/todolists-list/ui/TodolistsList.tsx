@@ -6,7 +6,7 @@ import { AddItemForm } from "common/components";
 import { Todolist } from "features/todolists-list/ui/TodoList/Todolist";
 import { Navigate } from "react-router-dom";
 import { useActions } from "common/hooks";
-import { selectIsLoggedIn } from "features/auth/model/auth.selectors";
+import { selectIsLoggedIn } from "features/auth/model/authSelectors";
 import { selectTodolists } from "features/todolists-list/model";
 
 export const TodolistsList = () => {
@@ -20,11 +20,14 @@ export const TodolistsList = () => {
       return;
     }
     fetchTodolists();
-  }, []);
+  }, [isLoggedIn, fetchTodolists]);
 
-  const addTodolist = useCallback((title: string) => {
-    addTodolistThunk(title);
-  }, []);
+  const addTodolist = useCallback(
+    (title: string) => {
+      return addTodolistThunk(title).unwrap();
+    },
+    [addTodolistThunk],
+  );
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;

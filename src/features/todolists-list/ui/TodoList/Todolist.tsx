@@ -16,18 +16,16 @@ export const Todolist = React.memo(({ todolist }: { todolist: TodolistDomainType
     fetchTasks(id);
   }, []);
 
-  const addTaskHandler = (title: string) => addTask({ todolistId: id, title });
+  const addTaskHandler = (title: string) => addTask({ todolistId: id, title }).unwrap();
 
   return (
-    <div>
+    <>
       <TodoListTitle todolist={todolist} />
       <AddItemForm addItem={addTaskHandler} disabled={entityStatus === "loading"} />
-      <div>
-        <Tasks todolist={todolist} />
-      </div>
+      <Tasks todolist={todolist} />
       <div style={{ paddingTop: "10px" }}>
         <FilterTasksButton todolist={todolist} />
       </div>
-    </div>
+    </>
   );
 });
