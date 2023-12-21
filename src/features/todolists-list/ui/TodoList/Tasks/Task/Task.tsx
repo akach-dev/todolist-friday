@@ -6,7 +6,7 @@ import { TaskStatuses } from "common/enums";
 import { TaskType } from "features/todolists-list/api/tasks/tasksApi.types";
 import { useActions } from "common/hooks";
 import { tasksThunks } from "features/todolists-list/model/tasks/tasksSlice";
-import s from "features/todolists-list/ui/Tasks/Task/Task.module.css";
+import s from "features/todolists-list/ui/TodoList/Tasks/Task/Task.module.css";
 
 export const Task = React.memo(({ task, todolistId }: { task: TaskType; todolistId: string }) => {
   const { removeTask, updateTask } = useActions(tasksThunks);

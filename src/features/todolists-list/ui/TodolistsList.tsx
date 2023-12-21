@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { todolistsActions, todolistsThunks } from "features/todolists-list/model/todolists/todolistsSlice";
-import { tasksThunks } from "features/todolists-list/model/tasks/tasksSlice";
+import { todolistsThunks } from "features/todolists-list/model/todolists/todolistsSlice";
 import { Grid, Paper } from "@mui/material";
 import { AddItemForm } from "common/components";
 import { Todolist } from "features/todolists-list/ui/TodoList/Todolist";
@@ -14,33 +13,13 @@ export const TodolistsList = () => {
   const todolists = useSelector(selectTodolists);
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
-  const {
-    removeTodolist: removeTodolistThunk,
-    addTodolist: addTodolistThunk,
-    fetchTodolists,
-    changeTodolistTitle: changeTodolistTitleThunk,
-  } = useActions(todolistsThunks);
-
-  const { addTask: addTaskThunk } = useActions(tasksThunks);
-  const { changeTodolistFilter } = useActions(todolistsActions);
+  const { addTodolist: addTodolistThunk, fetchTodolists } = useActions(todolistsThunks);
 
   useEffect(() => {
     if (!isLoggedIn) {
       return;
     }
     fetchTodolists();
-  }, []);
-
-  const addTask = useCallback(function (title: string, todolistId: string) {
-    addTaskThunk({ title, todolistId });
-  }, []);
-
-  const removeTodolist = useCallback(function (id: string) {
-    removeTodolistThunk(id);
-  }, []);
-
-  const changeTodolistTitle = useCallback(function (id: string, title: string) {
-    changeTodolistTitleThunk({ id, title });
   }, []);
 
   const addTodolist = useCallback((title: string) => {

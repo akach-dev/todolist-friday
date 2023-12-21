@@ -1,5 +1,5 @@
 import React from "react";
-import { Task } from "features/todolists-list/ui/Tasks/Task/Task";
+import { Task } from "features/todolists-list/ui/TodoList/Tasks/Task/Task";
 import { TodolistDomainType } from "features/todolists-list/model";
 import { filteredTasksByTodoListId } from "features/todolists-list/model/tasks/tasksSelectors";
 import { useSelector } from "react-redux";
