@@ -1,7 +1,7 @@
-import { AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
-import { elGR } from "@mui/material/locale";
+import { AnyAction, createSlice, isAnyOf, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
 import { tasksThunks } from "features/todolists-list/model/tasks/tasksSlice";
 import { todolistsThunks } from "features/todolists-list/model";
+import { authThunks } from "features/auth/model/authSlice";
 
 const initialState = {
   status: "idle" as RequestStatusType,
@@ -44,6 +44,9 @@ const slice = createSlice({
         } else {
           state.error = action.error.message ? action.error.message : "Some error occurred";
         }
+      })
+      .addMatcher(isAnyOf(authThunks.initializeApp.fulfilled, authThunks.initializeApp.rejected), (state) => {
+        state.isInitialized = true;
       });
   },
 });
