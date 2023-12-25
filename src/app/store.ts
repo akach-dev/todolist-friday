@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { tasksSlice } from "features/todolists-list/model/tasks/tasksSlice";
 import { todolistsSlice } from "features/todolists-list/model/todolists/todolistsSlice";
-import { appSlice } from "app/appSlice";
+import { appSlice } from "app/model/appSlice";
 import { authSlice } from "features/auth/model/authSlice";
 
 export const store = configureStore({

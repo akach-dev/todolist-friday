@@ -1,16 +1,16 @@
-// import React from "react";
-// import { createRoot } from "react-dom/client";
-// import "./index.css";
-// import App from "./app/App";
-// import { store } from "app/store";
-// import { Provider } from "react-redux";
-//
-// const root = createRoot(document.getElementById("root") as HTMLElement);
-// root.render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>,
-// );
+import React from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "app/ui/App/App";
+import { store } from "app/store";
+import { Provider } from "react-redux";
+
+const root = createRoot(document.getElementById("root") as HTMLElement);
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+);
 
 //===============================================================================================//
 
@@ -301,35 +301,37 @@
 
 //===============================================================================================//
 
-import ReactDOM from "react-dom/client";
-import axios from "axios";
-import React from "react";
-
-export const Jpegs = () => {
-  const onClick = () => {
-    axios.get("https://neko-back.herokuapp.com/file", { responseType: "arraybuffer" }).then((res) => {
-      const blob = new Blob([res.data], { type: "image/jpeg" });
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-
-      link.setAttribute("download", "exam-img.jpg");
-
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    });
-  };
-
-  return (
-    <div>
-      <button onClick={onClick}>get img</button>
-    </div>
-  );
-};
-
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(<Jpegs />);
+// import ReactDOM from "react-dom/client";
+// import axios from "axios";
+// import React from "react";
+//
+// export const Jpegs = () => {
+//   const onClick = () => {
+//     axios.get("https://neko-back.herokuapp.com/file", { responseType: "arraybuffer" }).then((res) => {
+//       const blob = new Blob([res.data], { type: "image/jpeg" });
+//       const downloadUrl = window.URL.createObjectURL(blob);
+//       const link = document.createElement("a");
+//
+//       link.href = downloadUrl;
+//
+//       link.setAttribute("download", "exam-img.jpg");
+//
+//       document.body.appendChild(link);
+//
+//       link.click();
+//       link.remove();
+//     });
+//   };
+//
+//   return (
+//     <div>
+//       <button onClick={onClick}>get img</button>
+//     </div>
+//   );
+// };
+//
+// const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+// root.render(<Jpegs />);
 
 // 📜 Описание:
 // Картинка сохраняется поломанной.
