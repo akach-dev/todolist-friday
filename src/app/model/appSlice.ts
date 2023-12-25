@@ -32,12 +32,14 @@ const slice = createSlice({
         state.status = "idle";
       })
       .addMatcher(isRejected, (state, action: AnyAction) => {
+        debugger;
         state.status = "failed";
 
         if (action.payload) {
           if (
             action.type === tasksThunks.addTask.rejected.type ||
-            action.type === todolistsThunks.addTodolist.rejected.type
+            action.type === todolistsThunks.addTodolist.rejected.type ||
+            action.type === authThunks.initializeApp.rejected.type
           )
             return;
           state.error = action.payload.messages[0];
